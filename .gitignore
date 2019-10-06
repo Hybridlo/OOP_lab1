@@ -1,4 +1,7 @@
 .idea/
+lwjgl64.dll
+OpenAL64.dll
+bulletjme.dll
 
 # Created by https://www.gitignore.io/api/java,gradle
 
