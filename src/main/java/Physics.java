@@ -21,7 +21,7 @@ public class Physics extends AbstractAppState {
         stateManager.attach(bulletAppState);
     }
 
-    void addToPhysicsSpace(Spatial spatial) {
-        bulletAppState.getPhysicsSpace().add(spatial);
+    void addToPhysicsSpace(Object obj) {
+        bulletAppState.getPhysicsSpace().add(obj);
     }
 }
