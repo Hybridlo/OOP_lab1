@@ -77,5 +77,7 @@ public class Terrain extends AbstractAppState {
         terrain.addControl(control);                                      //The LOD (level of detail) depends on were the camera is
 
         terrain.addControl(new RigidBodyControl(0));                //Add physics
+
+        app.getStateManager().getState(Physics.class).addToPhysicsSpace(terrain);
     }
 }

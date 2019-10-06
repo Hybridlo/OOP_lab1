@@ -9,10 +9,12 @@ public class AppMain  extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Terrain terrain = new Terrain();
-        terrain.initialize(stateManager, this);
-
         Physics physics = new Physics();
+        stateManager.attach(physics);
         physics.initialize(stateManager, this);
+
+        Terrain terrain = new Terrain();
+        stateManager.attach(terrain);
+        terrain.initialize(stateManager, this);
     }
 }
