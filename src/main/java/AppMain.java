@@ -11,5 +11,8 @@ public class AppMain  extends SimpleApplication {
     public void simpleInitApp() {
         Terrain terrain = new Terrain();
         terrain.initialize(stateManager, this);
+
+        Physics physics = new Physics();
+        physics.initialize(stateManager, this);
     }
 }
