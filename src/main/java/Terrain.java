@@ -29,7 +29,7 @@ public class Terrain extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
-        this.rootNode     = this.app.getRootNode();
+        this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
 
         mat_terrain = new Material(assetManager,
