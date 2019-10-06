@@ -26,4 +26,8 @@ public class Player extends AbstractAppState {
 
         player.setGravity(new Vector3f(0,-30f,0));
     }
+
+    CharacterControl getPlayer() {
+        return player;
+    }
 }

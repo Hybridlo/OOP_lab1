@@ -16,5 +16,13 @@ public class AppMain  extends SimpleApplication {
         Terrain terrain = new Terrain();
         stateManager.attach(terrain);
         terrain.initialize(stateManager, this);
+
+        Player player = new Player();
+        stateManager.attach(player);
+        player.initialize(stateManager, this);
+
+        Controls controls = new Controls();
+        stateManager.attach(controls);
+        controls.initialize(stateManager, this);
     }
 }
