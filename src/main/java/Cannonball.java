@@ -26,7 +26,7 @@ public class Cannonball extends AbstractAppState {
     private int gravity = 1;
 
     static {
-        sphere = new Sphere(32, 32, 0.4f, true, false);
+        sphere = new Sphere(32, 32, 2f, true, false);
         sphere.setTextureMode(Sphere.TextureMode.Projected);        //Initialize the cannon ball geometry
     }
 
@@ -59,7 +59,7 @@ public class Cannonball extends AbstractAppState {
         ball_geo.addControl(ball_phy); //Add physical ball to physics space
         app.getStateManager().getState(Physics.class).addToPhysicsSpace(ball_phy);
 
-        ball_phy.setLinearVelocity(cam.getDirection().mult(25)); //Accelerate the physical ball to shoot it
+        ball_phy.setLinearVelocity(cam.getDirection().mult(50)); //Accelerate the physical ball to shoot it
 
         ball_phy.setGravity(new Vector3f(0,-10f * gravity,0));
     }

@@ -20,11 +20,9 @@ public class Player extends AbstractAppState {
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
         player = new CharacterControl(capsuleShape, 0.05f);
 
-        player.setPhysicsLocation(new Vector3f(-10, 10, 10));
-
         app.getStateManager().getState(Physics.class).addToPhysicsSpace(player);
 
-        player.setGravity(new Vector3f(0,-30f,0));
+        player.setGravity(new Vector3f(0,0,0));
     }
 
     CharacterControl getPlayer() {
