@@ -7,9 +7,9 @@ import com.jme3.asset.TextureKey;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.texture.Texture;
 
@@ -18,12 +18,12 @@ public class Cannonball extends AbstractAppState {
     private SimpleApplication app;
     private Node rootNode;
     private AssetManager assetManager;
-    private Camera cam;
 
     private RigidBodyControl ball_phy;
     private static final Sphere sphere;
     private Material stone_mat;
     private int gravity = 1;
+    private Geometry arrowGeometry;
 
     static {
         sphere = new Sphere(32, 32, 2f, true, false);
@@ -38,7 +38,8 @@ public class Cannonball extends AbstractAppState {
         this.app = (SimpleApplication) app;
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
-        this.cam = this.app.getCamera();
+
+        arrowGeometry = app.getStateManager().getState(Player.class).getArrowGeometry();
 
         stone_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key2 = new TextureKey("Textures/Terrain/Rock/Rock.PNG");
@@ -52,14 +53,19 @@ public class Cannonball extends AbstractAppState {
         ball_geo.setMaterial(stone_mat);
         rootNode.attachChild(ball_geo);
 
-        ball_geo.setLocalTranslation(cam.getLocation()); //Position the cannon ball
+        ball_geo.setLocalTranslation(arrowGeometry.getLocalTranslation()); //Position the cannon ball
 
         ball_phy = new RigidBodyControl(1f); //Make the ball physical with a mass > 0.0f
 
         ball_geo.addControl(ball_phy); //Add physical ball to physics space
         app.getStateManager().getState(Physics.class).addToPhysicsSpace(ball_phy);
 
-        ball_phy.setLinearVelocity(cam.getDirection().mult(50)); //Accelerate the physical ball to shoot it
+        float[] angles = new float[3];
+        arrowGeometry.getLocalRotation().toAngles(angles);
+
+        Vector3f arrowVector = new Vector3f((float) -Math.cos(angles[2]), (float) -Math.sin(angles[2]), 0);
+
+        ball_phy.setLinearVelocity(arrowVector.mult(50)); //Accelerate the physical ball to shoot it
 
         ball_phy.setGravity(new Vector3f(0,-10f * gravity,0));
     }
