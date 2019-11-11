@@ -1,3 +1,5 @@
+package lab;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -20,8 +22,15 @@ public class Controls extends AbstractAppState
     private InputManager inputManager;
     private AssetManager assetManager;
     private Node guiNode;
-    private BitmapFont guiFont;
     private BitmapText num;
+
+    private static final String GRAVITY_DOWN = "GravityDown";
+    private static final String GRAVITY_UP = "GravityUp";
+    private static final String ARROW_DOWN = "ArrowDown";
+    private static final String ARROW_UP = "ArrowUp";
+    private static final String SHOOT = "Shoot";
+
+    volatile boolean isInit = false;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -34,16 +43,18 @@ public class Controls extends AbstractAppState
         setUpKeys();
 
         initGravityCounter();
+
+        isInit = true;
     }
 
     private void initGravityCounter() {
         guiNode.detachAllChildren();
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
         num = new BitmapText(guiFont, false);
-        num.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+        num.setSize((float)guiFont.getCharSet().getRenderedSize() * 2);
         num.setText(Integer.toString(app.getStateManager().getState(Cannonball.class).getGravity()));
         num.setLocalTranslation( // center bottom
-                app.getCamera().getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
+                (float)app.getCamera().getWidth() / 2 - (float)guiFont.getCharSet().getRenderedSize() / 3 * 2,
                 num.getLineHeight(), 0);
         guiNode.attachChild(num);
     }
@@ -53,39 +64,41 @@ public class Controls extends AbstractAppState
     }
 
     private void setUpKeys() {
-        inputManager.addMapping("GravityDown", new KeyTrigger(KeyInput.KEY_A)); //init keys
-        inputManager.addMapping("GravityUp", new KeyTrigger(KeyInput.KEY_D));
-        inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_W));
-        inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addMapping("Shoot", new KeyTrigger(KeyInput.KEY_SPACE),
+        inputManager.addMapping(GRAVITY_DOWN, new KeyTrigger(KeyInput.KEY_A)); //init keys
+        inputManager.addMapping(GRAVITY_UP, new KeyTrigger(KeyInput.KEY_D));
+        inputManager.addMapping(ARROW_UP, new KeyTrigger(KeyInput.KEY_W));
+        inputManager.addMapping(ARROW_DOWN, new KeyTrigger(KeyInput.KEY_S));
+        inputManager.addMapping(SHOOT, new KeyTrigger(KeyInput.KEY_SPACE),
                 new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(this, "GravityDown");
-        inputManager.addListener(this, "GravityUp");
-        inputManager.addListener(this, "ArrowUp");
-        inputManager.addListener(this, "ArrowDown");
-        inputManager.addListener(this, "Shoot");
+        inputManager.addListener(this, GRAVITY_DOWN);
+        inputManager.addListener(this, GRAVITY_UP);
+        inputManager.addListener(this, ARROW_UP);
+        inputManager.addListener(this, ARROW_DOWN);
+        inputManager.addListener(this, SHOOT);
     }
 
     @Override
     public void onAction(String binding, boolean isPressed, float tpf) {
         if (!isPressed) {
             switch (binding) {
-                case "GravityDown":
+                case GRAVITY_DOWN:
                     app.getStateManager().getState(Cannonball.class).gravityDown();
                     updateGravityCounter();
                     break;
-                case "GravityUp":
+                case GRAVITY_UP:
                     app.getStateManager().getState(Cannonball.class).gravityUp();
                     updateGravityCounter();
                     break;
-                case "ArrowUp":
+                case ARROW_UP:
                     app.getStateManager().getState(Player.class).arrowUp();
                     break;
-                case "ArrowDown":
+                case ARROW_DOWN:
                     app.getStateManager().getState(Player.class).arrowDown();
                     break;
-                case "Shoot":
+                case SHOOT:
                     app.getStateManager().getState(Cannonball.class).makeCannonBall();
+                    break;
+                default:
                     break;
             }
         }

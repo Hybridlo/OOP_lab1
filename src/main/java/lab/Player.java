@@ -1,3 +1,5 @@
+package lab;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -13,20 +15,16 @@ import com.jme3.scene.debug.Arrow;
 
 public class Player extends AbstractAppState {
 
-    private SimpleApplication app;
-    private AssetManager assetManager;
-    private Node rootNode;
-
     private Geometry arrowGeometry;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
-        this.assetManager = this.app.getAssetManager();
-        this.rootNode = this.app.getRootNode();
+        SimpleApplication theApp = (SimpleApplication) app;
+        AssetManager assetManager = theApp.getAssetManager();
+        Node rootNode = theApp.getRootNode();
 
-        this.app.getFlyByCamera().setMoveSpeed(0);
+        theApp.getFlyByCamera().setMoveSpeed(0);
 
         Arrow arrow = new Arrow(Vector3f.UNIT_X);
         arrowGeometry = new Geometry("coordinate axis", arrow);
@@ -40,11 +38,11 @@ public class Player extends AbstractAppState {
         rootNode.attachChild(arrowGeometry);
     }
 
-    Geometry getArrowGeometry() {
+    public Geometry getArrowGeometry() {
         return arrowGeometry;
     }
 
-    void arrowUp() {
+    public void arrowUp() {
         float[] angles = new float[3];
         arrowGeometry.getLocalRotation().toAngles(angles);
         if (angles[2] * FastMath.RAD_TO_DEG > -89) {
@@ -52,7 +50,7 @@ public class Player extends AbstractAppState {
         }
     }
 
-    void arrowDown() {
+    public void arrowDown() {
         float[] angles = new float[3];
         arrowGeometry.getLocalRotation().toAngles(angles);
         if (angles[2] * FastMath.RAD_TO_DEG < -1) {

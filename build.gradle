@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'application'
+    id "org.sonarqube" version "2.7"
 }
 
 mainClassName = 'AppMain'

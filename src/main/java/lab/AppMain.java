@@ -1,7 +1,16 @@
+package lab;
+
 import com.jme3.app.SimpleApplication;
-import com.jme3.font.BitmapFont;
 
 public class AppMain  extends SimpleApplication {
+
+    Physics physics;
+    Scene scene;
+    Player player;
+    Cannonball cannonball;
+    Controls controls;
+
+    volatile boolean isInit = false;
 
     public static void main(String[] args) {
         AppMain app = new AppMain();
@@ -10,19 +19,21 @@ public class AppMain  extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Physics physics = new Physics();
+        physics = new Physics();
         stateManager.attach(physics);
 
-        Scene scene = new Scene();
+        scene = new Scene();
         stateManager.attach(scene);
 
-        Player player = new Player();
+        player = new Player();
         stateManager.attach(player);
 
-        Cannonball cannonball = new Cannonball();
+        cannonball = new Cannonball();
         stateManager.attach(cannonball);
 
-        Controls controls = new Controls();
+        controls = new Controls();
         stateManager.attach(controls);
+
+        isInit = true;
     }
 }

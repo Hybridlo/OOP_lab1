@@ -1,3 +1,5 @@
+package lab;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -13,34 +15,31 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 public class Scene extends AbstractAppState {
-    private SimpleApplication app;
-    private Node rootNode;
-    private AssetManager assetManager;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
-        this.rootNode = this.app.getRootNode();
-        this.assetManager = this.app.getAssetManager();
+        SimpleApplication theApp = (SimpleApplication) app;
+        Node rootNode = theApp.getRootNode();
+        AssetManager assetManager = theApp.getAssetManager();
 
         Box box = new Box(100.0f,0.5f,5.0f);
         Spatial floor = new Geometry("Box", box );
-        Material mat_brick = new Material(
+        Material matBrick = new Material(
                 assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat_brick.setTexture("ColorMap",
+        matBrick.setTexture("ColorMap",
                 assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg"));
-        floor.setMaterial(mat_brick);
+        floor.setMaterial(matBrick);
         floor.setLocalTranslation(0.0f,0.0f,-100.0f);
 
         CollisionShape sceneShape =
                 CollisionShapeFactory.createMeshShape(floor);
-        RigidBodyControl floor_phys = new RigidBodyControl(sceneShape, 0);
+        RigidBodyControl floorPhys = new RigidBodyControl(sceneShape, 0);
 
-        floor.addControl(floor_phys);
+        floor.addControl(floorPhys);
 
         rootNode.attachChild(floor);
 
-        app.getStateManager().getState(Physics.class).addToPhysicsSpace(floor_phys);
+        app.getStateManager().getState(Physics.class).addToPhysicsSpace(floorPhys);
     }
 }
